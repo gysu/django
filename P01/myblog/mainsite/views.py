@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from .models import Post
 from datetime import datetime
@@ -10,6 +10,17 @@ def homepage(request):
   now = datetime.now()
   html = template.render(locals())  #回傳區域變數用字典型態打包 一定要字典
   return HttpResponse(html)
+  
+def showpost(request,slug):
+  template =get_template('post.html')
+  try:
+   post =Post.objects.get(slug=slug)
+   if post != None:
+       html = template.render(locals())  #回傳區域變數用字典型態打包 一定要字典
+       return HttpResponse(html)
+  except:
+    #如果slug不存在資料庫就回去首頁
+    return redirect('/')
 # --------------參考----
 # def showtemplate(request):
 #     vendor_list = Vendor.objects.all() # 把所有 Vendor 的資料取出來

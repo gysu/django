@@ -1,0 +1,43 @@
+<!-- {% load static %} -->
+{% block 'header.html' %}
+
+<!-- <h1>歡迎光臨我的部落格</h1> -->
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <h1 class="navbar-brand">
+      <a href="/"><img class ="logo" src="{% static '/images/logo.jpg' %}" ></a> 
+    歡迎光臨我的部落格</h1> 
+    <!-- <a class="navbar-brand" href="/"></a> -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav md-flex-row flex-wrap ms-md-auto">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+  
+    </div>
+  </div>
+  </nav>
+
+
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner mb-2">
+      <div class="carousel-item active">
+        <img src="https://picsum.photos/960/300/?random=11" class="d-block w-100" alt="...">
+      </div>
+    </div>
+  </div>
+
+  <!-- <p>{{posts}}</p> -->
+
+{% endblock %}
