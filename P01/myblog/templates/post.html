@@ -1,13 +1,30 @@
 {% extends 'base.html' %}
-
-      {% block headmessage %}
-      <h3 class="d-inline">{{post.title}}{{post.slug}}</h3> 
-      <a href="/">回首頁</a>
+{% block title %} 
+<title>歡迎光臨su的部落格</title>
+{% endblock %}
+      {% block headmessage %} 
+      <!-- <h3 class="d-inline">{{post.title}} -->
+            <!-- <a href="/"><small style="font-size: 16px;">回首頁</small> </a></h3> -->
+      
       
       {% endblock %}
       <!-- 建立時間:{{post.pub_date}} -->
       {% block content%}
-      <p class = "mt-3"><small> {{post.body}} </small></p>  
-      
+      <!-- <p class = "mt-3"><small> {{post.body}} </small></p>   -->
+      <div class="col">
+            <div class="card h-100">
+                <div class="card-header">
+                  <h3>{{post.title}}{{post.slug}}<a href="/"><small style="font-size: 16px;">回首頁</small> </a> </h3>
+                </div>
+                <div class="card-body">
+                  <!-- <a class ="text-decoration-none" href="/post/{{post.slug}}"> -->
+                    <blockquote class="blockquote mb-0">
+                     <p>{{ post.body | safe | linebreaksbr}}</p>
+                    </blockquote>
+                  <!-- </a> -->
+                  
+                </div>
+            </div>
+          </div>
       {% endblock %}
 

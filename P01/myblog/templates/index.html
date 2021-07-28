@@ -6,14 +6,35 @@
 {% endblock %}
 
 {% block headmessage %} 
-<p class="border-bottom p-2" >文章列表</p>
+<h3 class="border-bottom p-2" >文章列表</h3>
 {% endblock %}
+
 {% block content %} 
-        {% for post in posts %}
-        
-            <p class="p-2">
+     
+            {% for post in posts %}
+           
+              <div class="col-12 col-md-6 g-2">
+                <div class="card h-100">
+                    <div class="card-header">
+                      {{post.title}}
+                    </div>
+                    <div class="card-body">
+                      <a class ="text-decoration-none" href="/post/{{post.slug}}">
+                        <blockquote class="blockquote mb-0">
+                         <p>{{ post.body | truncatechars:20 }}</p>
+                         <footer class="blockquote-footer">
+                           <cite title="Source Title">發布時間:</cite> {{post.pub_date | date:"Ymd , h:i"}}
+                          </footer>
+                        </blockquote>
+                      </a>
+                    </div>
+                </div>
+              </div>
+           
+   
+            <!-- <p class="p-2">
               <a class ="text-decoration-none" href="/post/{{post.slug}}">{{post.title}} </a>
-            </p>
+            </p> -->
         {% endfor %}
 
 {% endblock %}
