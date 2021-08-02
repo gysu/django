@@ -21,7 +21,8 @@
                     <div class="card-body">
                       <a class ="text-decoration-none" href="/post/{{post.slug}}">
                         <blockquote class="blockquote mb-0">
-                         <p>{{ post.body | truncatechars:20 }}</p>
+                         <p>{{ post.abstracts | truncatechars:20 }}   <img class ="w-25"src="{{post.pic_urls}}" ></p>
+                      
                          <footer class="blockquote-footer">
                            <cite title="Source Title">發布時間:</cite> {{post.pub_date | date:"Ymd , h:i"}}
                           </footer>
