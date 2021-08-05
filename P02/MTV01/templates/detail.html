@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h2>{{p.name}}</h2>
+  <hr>
+  <table width=400 border=1 bgcolor='#ccffcc'>
+    <tr>
+      <td>品項編號</td>   
+      <td>品項名稱</td>  
+      <td>品項售價</td>  
+      <td>庫存數量</td>  
+    </tr>
+    <tr>
+      <td>{{p.sku}}</td>   
+      <td>{{p.name}}</td>  
+      <td>{{p.price}}</td>  
+      <td>{{p.qty}}</td>  
+    </tr>
+  </table>
+  <a href="/listing">回列表</a>
+</body>
+</html>
