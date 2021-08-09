@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List</title>
+</head>
+<body>
+  <a href="/">回首頁</a>
+  <h2>以下是目前本店販售中的產品列表</h2>
+  <hr>
+  <table width=400 border=1 bgcolor='#ccffcc'>
+    <tr>
+      <td>品名</td>   
+      <td>售價</td>  
+      <td>庫存量</td>  
+    </tr>
+    {% for p in products %}
+    <tr>
+      <td><a href="/listing/{{p.sku}}">{{p.name}}</a></td>   
+      <td>{{p.price}}</td>  
+      <td>{{p.qty}}</td>  
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>以下是缺貨</h2>
+  <table width=400 border=1 bgcolor='#ccffcc'>
+    <tr>
+      <td>品名</td>   
+      <td>售價</td>  
+      <td>庫存量</td>  
+    </tr>
+    {% for p in products2 %}
+    <tr>
+      <td><a href="/listing/{{p.sku}}">{{p.name}}</a></td>   
+      <td>{{p.price}}</td>  
+      <td>{{p.qty}}</td>  
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>

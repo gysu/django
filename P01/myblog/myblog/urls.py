@@ -16,10 +16,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mainsite.views import homepage,showpost
+from mysite import views as MTV_views
+from django.conf.urls import include
+
+MTV_urlpatterns = [
+    # path('admin/', admin.site.urls),
+    path('MTVhome/',  MTV_views.MTVhome),
+    path('about/',  MTV_views.about),
+    path('listing/',  MTV_views.listing),
+    path('list/',  MTV_views.listing2), #這是用view寫
+    path('listing/<sku>/',  MTV_views.disp_detail),
+]
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',homepage),
     #     post頁面底下的/slugid 第一個slug型態:第二個是資料欄位名稱 也可以簡化<slug>就好
     path('post/<slug:slug>/',showpost),
+    path('MTV/',include(MTV_urlpatterns)),  #加入子網域
 
 ]
