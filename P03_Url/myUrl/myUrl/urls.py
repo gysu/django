@@ -31,6 +31,13 @@ urlpatterns = [
     path('about/<int:author_no>', views.about),
     path('about/', views.about), #about後面沒有參數時,導到預設參數
     path('info/',include(my_patterns)),  #加入子網域
-    path('list/<int:yr>/<int:mon>/<int:day>',views.listing),
-    path('post/<int:yr>/<int:mon>/<int:day>/<int:post_num>',views.post,name='post-url')
+
+    path('list/<int:yr>/<int:mon>/<int:day>',views.listing,name='list-url'), 
+    path('post/<int:yr>/<int:mon>/<int:day>/<int:post_num>',views.post,name='post-url'),#在views的反解析
+    path('post2/<int:yr>/<int:mon>/<int:day>/<int:post_num>',views.post2,name='post-url-2'), #在template的反解析
+    path('mul/<int:a>/<int:b>',views.mul,name='mul-url'), 
+    path('C/<int:c>',views.C,name='C-url'), 
+    path('F/<int:f>',views.F,name='F-url'), 
+    
 ]
+ 

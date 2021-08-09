@@ -32,10 +32,27 @@ def homepage(request):  #舊版寫法 不Ok  路徑寫死
   html="<a href='post/{}/{}/{}/{}'> show the post  </a>".format(year,month,day,postid) #post導到post fun 頁面
   return HttpResponse(html)
 
-def homepage(request):  #反解析寫法 
+def homepage(request):  #反解析寫法 in views.py 不Ok
   year = 2021
   month= 8
   day = 9
   postid= 3
   html="<a href='{}'> show the post  </a>".format(reverse('post-url',args=(year,month,day,postid,))) 
   return HttpResponse(html)
+
+def post2(request,yr,mon,day,post_num): #反解析寫法 in template
+  return render(request, 'post2.html',locals())
+
+# 請編寫一個簡單的網站，設計一個「/mul/」頁面，可以把
+# 「localhost:8000/mul/10/20」後面的2個數字取出，並在
+# 網頁中顯示出2數相乘的結果
+def mul(request,a,b): #反解析寫法 in template 
+  content = {'ans':a*b}
+  return render(request, 'mul.html',locals())
+
+def C(request,c): 
+  transC = int(c*(9/5)+32)
+  return render(request, 'C.html',locals())
+def F(request,f): 
+  transF = int(5/9*(f-32))
+  return render(request, 'F.html',locals())
