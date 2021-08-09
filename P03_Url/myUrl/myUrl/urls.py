@@ -31,4 +31,7 @@ urlpatterns = [
     path('about/<int:author_no>', views.about),
     path('about/', views.about), #about後面沒有參數時,導到預設參數
     path('info/',include(my_patterns)),  #加入子網域
+    path('list/<int:yr>/<int:mon>/<int:day>',views.listing),
+    path('post/<int:yr>/<int:mon>/<int:day>/<int:post_num>',views.post)
+
 ]
