@@ -15,7 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mysite import views
+from django.conf.urls import include
+
+my_patterns =[
+    path('company/',views.company),
+    path('sales/',views.sales),
+    path('contact/',views.contact),
+
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.homepage),
+    path('about/<int:author_no>', views.about),
+    path('about/', views.about), #about後面沒有參數時,導到預設參數
+    path('info/',include(my_patterns)),  #加入子網域
 ]
