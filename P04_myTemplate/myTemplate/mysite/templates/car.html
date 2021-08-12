@@ -1,0 +1,46 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="col-12 col-md-4 ">
+  <ul class="list-group">
+    {% for car in car_maker %}
+       <li class="list-group-item"><a href="{% url 'car-url' forloop.counter0 %}">{{ car }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+<div class = "col-md-6">
+  <h2>{{maker_name}}</h2>
+  {% if cars %}
+     
+     <table class="table align-middle">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">車款</th>
+          <th scope="col">價格</th>
+          <th scope="col">庫存</th>
+        </tr>
+      </thead>
+     
+      <tbody>
+        <!-- {{car_list}} -->
+        {{cars}}
+        {% load humanize%}
+        {% for item in cars|dictsort:"qty"%}
+                              
+        <tr bgcolor="{% cycle '#eeeeee' '#cccccc' '#ffa' %}">
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ item.model }}</td>
+          <td>$NT{{ item.price | floatformat:2 | intcomma  }}</td> 
+                                <!--小數點後兩位  千分位格式 -->
+          <td>{{item.qty}}</td>
+        </tr> 
+        {%empty%}
+          <p>沒車車</p>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <li>Sorry, 目前無庫存車.</li>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% block 'header.html' %}
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a  href="/"><img class ="logo" src="{% static 'images/logo.jpg' %}" alt=""></a>
+    {% if hour < 06 %}
+    <a class="navbar-brand" href="/">早安{{msg}}{{tv.name}}選台器</a>
+    {% elif hour > 10 %}
+    <a class="navbar-brand" href="/">午安{{msg}}{{tv.name}}選台器</a>
+    {% endif %}
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'engtv-url' 0 %}">英文版menu</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'car-url' 0 %}">車車</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'admin:index' %}" tabindex="-1" aria-disabled="true">管理</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+{%  endblock %}

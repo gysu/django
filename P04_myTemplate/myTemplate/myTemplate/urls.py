@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from mysite import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index),
+    path('<int:tvno>/',views.yt,name='tv-url'),
+    path('eng/<int:tvno>/',views.engyt,name='engtv-url'),
+    path('car/<int:maker>/',views.carlist,name='car-url')
+
+
 ]

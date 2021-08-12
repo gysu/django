@@ -1,0 +1,13 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="col-12 col-md-4 ">
+  <ul class="list-group">
+    {% for tv in tv_list %}
+       <li class="list-group-item"><a href="{% url 'tv-url' forloop.counter0 %}">{{ tv.name}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+<div class = "col-md-4">
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ tv.tvcode }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+{% endblock %}
