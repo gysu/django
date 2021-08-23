@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}<title>P06 Form post表單 listing</title>{% endblock %}
+{% block content%}
+<div class="col col-md-12 ">
+  <form name='my form' action='.' method='POST'>
+    {% csrf_token %}
+    <div class="card text">
+      <div class="card-header d-flex">
+        寫信給管理員
+      </div>
+
+      {% if message %}
+      <div class="alert alert-success" role="alert" >
+        {{message}}
+        {{user_name}}
+        {{user_city}}
+        {{user_school}}
+        {{user_email}}
+        {{user_message | linebreaks}}
+      </div>
+      {% endif %}
+
+      <div class="card-body ">
+        {{form.as_p}}
+      </div>
+
+      <div class="card-footer">
+        <input  type="submit" value="送出">
+      </div>
+
+    </div>
+  </form>
+
+</div> 
+<script>
+  function confirm() {
+    layer.alert('见到你真的很高兴');
+  }
+</script>
+{% endblock %}

@@ -21,5 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('get_example/', views.get_example),
     path('', views.index),
-    path('<int:pid>/<str:del_pass>',views.index),#刪除
+    path('<int:pid>/<str:del_pass>',views.index),#GET的刪除都放在index不是很好 要拆開
+    path('list/',views.listing),#將顯示與貼文獨立出來 list負責顯示訊息
+    path('post/',views.posting),#post 負責貼文
+    path('contact/',views.contact),#聯絡我forms表單 讓表單自動生成
     ]

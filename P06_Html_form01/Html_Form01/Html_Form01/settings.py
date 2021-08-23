@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mysite'
+    'mysite',
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,12 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ANYMAIL = {
+    # (exact settings here depend on your ESP...)
+    "MAILGUN_API_KEY": "fadf3e05529a8dfab2a86f4b303df0a1-fb87af35-30d3e638",
+    "MAILGUN_SENDER_DOMAIN": 'sandbox0e84eac088eb4484aea08bd1dbdf36ba.mailgun.org',  # your Mailgun domain, if needed
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"  # or sendgrid.EmailBackend, or...
+DEFAULT_FROM_EMAIL = "you@example.com"  # if you don't already have this in settings
+SERVER_EMAIL = "your-server@example.com"  # ditto (default from-email for Django errors)
