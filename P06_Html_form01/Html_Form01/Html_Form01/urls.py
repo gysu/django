@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mysite import views
+from django.conf.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +26,6 @@ urlpatterns = [
     path('list/',views.listing),#將顯示與貼文獨立出來 list負責顯示訊息
     path('post/',views.posting),#post 負責貼文
     path('contact/',views.contact),#聯絡我forms表單 讓表單自動生成
+    path('post2db/',views.post2db),#張貼 貼文用modelform顯示欄位
+    path('captcha/', include('captcha.urls')) #機器人驗證對應網址
     ]

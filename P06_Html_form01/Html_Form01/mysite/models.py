@@ -12,7 +12,7 @@ class Post(models.Model):
   mood = models.ForeignKey(Mood,on_delete=models.CASCADE)
   nickname = models.CharField(max_length=50,default='請輸入暱稱') 
   message  = models.TextField(null=False) 
-  del_pass = models.CharField(max_length=50)
+  del_pass = models.CharField(max_length=50,blank=True) #blank=True ModelForm不用驗證也可以
   pub_time = models.DateTimeField(auto_now=True)
   enabled  = models.BooleanField(default=False) #改True 就可以預設開啟
                                                 #是否要把這筆資料顯示到網頁上

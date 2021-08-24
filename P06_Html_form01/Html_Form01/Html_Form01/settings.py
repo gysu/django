@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mysite',
     'anymail',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +138,5 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"  # or sendgrid.EmailBackend, or...
 DEFAULT_FROM_EMAIL = "you@example.com"  # if you don't already have this in settings
 SERVER_EMAIL = "your-server@example.com"  # ditto (default from-email for Django errors)
+
+GOOGLE_RECAPTCHA_SECRET_KEY ="6LcHYB8cAAAAAAr7gDnuwM32O2Fy02FP0Aq2c4uM"

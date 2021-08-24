@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from mysite.forms import PostForm
+from django.shortcuts import render,redirect
 
 # Create your views here.
-
+from django.http import HttpResponse,HttpResponseRedirect
 from mysite import models
 from mysite import forms
+
+
 
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
@@ -93,7 +96,7 @@ def posting(request):
 
   return render(request,"post.html",locals())
 
-#聯絡我 post接收 寄出mail
+#聯絡我  Form應用 post接收 寄出mail  
 def contact(request):
   #post方法可以用forms可以直接接收post欄位,就不用每個欄位都寫post
   if request.method =='POST': #判斷是不是用POST傳入
@@ -123,3 +126,45 @@ def contact(request):
     form = forms.ContactForm() #接收forms欄位直接渲染到畫面 就不用每個欄位都寫post
 
   return render(request,"contact.html",locals())
+
+import urllib
+import json
+from django.conf import settings
+def post2db(request): #從資料庫產生的form 再從
+  if request.method == "POST":
+    post_form = forms.PostForm(request.POST)
+    if post_form.is_valid():
+      recaptcha_response = request.POST.get('g-recaptcha-response')#google驗證 
+      url = 'https://www.google.com/recaptcha/api/siteverify'      #google驗證 
+      values = {                                                   #google驗證 
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response
+      }
+      data = urllib.parse.urlencode(values).encode()               #google驗證 
+      req = urllib.request.Request(url, data=data)                 #google驗證 
+      response = urllib.request.urlopen(req)                       #google驗證 
+      result = json.loads(response.read().decode())                #google驗證 
+      ur_pass = post_form.cleaned_data.get('del_pass') #取得樣板所填寫的資料
+      
+      if result['success']:#google驗證
+        if len(ur_pass)==0:
+         message="您的訊息已儲存，要等管理者啟用後才看得到喔。"
+         print(message)
+         post_form.save()
+        else:
+          message="您的訊息已發布。"
+          print(message)
+          new = post_form.save(commit=False)  #先把這筆記錄commit起來
+          new.enabled = True                  #可以改其他欄位
+          new.save()                          #再儲存
+          # post_form.save()            #儲存後畫面不會跳轉
+        return redirect('/list/')#所以重導畫面
+      else:
+        message = "reCAPTCHA驗證失敗，請在確認."
+    else:
+      message = '每個欄位都須填寫'
+  else:
+    post_form = forms.PostForm() #從form.py
+    moods = models.Mood.objects.all()
+    message = '每個欄位都須填寫'
+  return render(request,'post2db.html',locals())

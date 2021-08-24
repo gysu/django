@@ -1,31 +1,32 @@
 {% extends "base.html" %}
-{% block title %}<title>P06 Form post表單 聯絡我</title>{% endblock %}
+{% block title %}<title>P06 Form post表單 modelform</title>{% endblock %}
 {% block content%}
 <div class="col col-md-12 ">
   <form name='my form' action='.' method='POST'>
     {% csrf_token %}
     <div class="card text">
       <div class="card-header d-flex">
-        寫信給管理員
+        我要貼文
       </div>
 
       {% if message %}
       <div class="alert alert-success" role="alert" >
         {{message}}
-        {{user_name}}
-        {{user_city}}
-        {{user_school}}
-        {{user_email}}
-        {{user_message | linebreaks}}
       </div>
       {% endif %}
 
-      <div class="card-body ">
-        {{form.as_p}}
+      <div class="card-body "> 
+        <!-- {{form.as_p}} -->
+        <table>
+          {{post_form}}
+        </table>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <div class="g-recaptcha" data-sitekey="6LcHYB8cAAAAAKaZs9OLUJHdAnRwYKN-jDNhIylc"></div>
       </div>
 
       <div class="card-footer">
         <input  type="submit" value="送出">
+        <input type="reset" value="清除重填">
       </div>
 
     </div>
