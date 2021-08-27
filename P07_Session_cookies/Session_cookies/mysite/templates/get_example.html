@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}<title>P06 Form 表單</title>{% endblock %}
+{% block content%}
+
+ 
+      <div class = "col-md-4">
+        <form action="https://www.google.com/search" method='GET'>
+          <!-- name的q是google的變數名稱 -->
+          <input id='google_search' type='text' name='q'> 
+          <input type='submit' value='google搜尋'>
+        </form>
+      </div>
+
+      <div class = "col-md-8">   
+        <form name='my form' action='/' method='GET'>
+          <label for='byear'>出生年:</label>
+          <select name="byear" id="byear">
+            {% for year in years%}
+            <option value='{{ year }}'> {{ year }}</option>  
+            {% endfor %}
+          </select>
+          <br>
+
+          喜歡的顏色（可複選）：
+          <input type="checkbox" name ="fcolor" value ="Green">Green
+          <input type="checkbox" name ="fcolor" value ="Red">Red
+          <input type="checkbox" name ="fcolor" value ="Blue">Blue
+          <input type="checkbox" name ="fcolor" value ="Orange">Orange
+          <br>
+
+          喜歡的電影（單選）：
+          <input type="radio" name ="fmovie" value ="哥吉拉2">哥吉拉2
+          <input type="radio" name ="fmovie" value ="阿拉丁">阿拉丁
+          <input type="radio" name ="fmovie" value ="玩命關頭9">玩命關頭9
+          <input type="radio" name ="fmovie" value ="你的名子">你的名子
+          <br>
+
+          <label for='user_id'>Your ID:</label>
+          <input id='user_id' type='text' name='user_id'>
+          <label for='user_pass'>Your Password:</label>
+          <input id='user_pass' type='password' name='user_pass'>
+          <input type='submit' value='確認'>
+          <input type='reset' value='清除重填'>
+      </form>    
+
+      <p> Your ID :{{ urid | default:'未輸入id' }} </p>
+      {% if verified %}
+        <em> 驗證成功 </em>
+      {% else %}
+        <em> 帳號密碼錯誤 </em>
+      {% endif %}
+
+      <p>出生年:{{ur_byear}}</p>
+      <p>喜歡顏色:</p>
+      {% for c in urfcolor %}
+         {{c}}
+      {% empty %}
+         沒有選顏色
+      {% endfor %}
+      <p>喜好電影:{{ urmovie }}</p>
+      </div>
+
+      
+      </div>
+
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% block 'header.html%}
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+  <div class="container-fluid">
+    <a  href="/"><img class ="logo" src="{% static 'images/logo.jpg' %}" alt=""></a>
+    <a class="navbar-brand" href="/">NTU心情留言版</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/list">list</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/post">貼文post</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">聯絡我</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/post2db">我要貼文</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/get_example">get範例</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">分享日記</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/admin" tabindex="-1" aria-disabled="true">後台管理</a>
+        </li>
+
+        {% if username %}
+          <li><a class="nav-link" href="/userinfo">✅個人資訊</a></li>
+          <li><a class="nav-link" href="/post">寫日記</a></li>
+          <li><a class="nav-link" href="/contact">聯絡管理員</a></li>
+          <li><a class="nav-link" href="/logout">💨登出</a></li>
+        {% else %}
+          <li><a class="nav-link" href="/login">💥登入</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if username %}
+<h5>歡迎:{{username}}</h5>
+{% endif %}
+{% endblock %}

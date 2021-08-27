@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}<title>P06 Form 表單</title>{% endblock %}
+{% block content%}
+<div class="col-md-12">
+  {% if message %}
+  <div class="alert alert-success" role="alert">
+    {{ message | linebreaks  }}
+  </div>
+  {% endif %}
+
+                        <!-- 發送給自己action="." -->
+  <form name="my form" action="." method='Post'>
+    {% csrf_token %}
+    現在心情:<br>
+    {% for m in moods %}
+      <div class="form-check-inline form-switch">
+       <input  class="form-check-input " type="radio" name="mood" value="{{m.status}}">{{m.status}}
+     </div>
+    {% empty %}
+      <p>空空如也</p>
+    {% endfor %}
+
+    <div><label for="message">心情留言板:</label></div>
+      <!-- Text input -->
+    <div class="form-outline mb-4">
+      <textarea class="form-control" name="user_post" id="form6Example7" rows="4"></textarea>
+      <!-- <label class="form-label" for="form6Example7"></label> -->
+    </div>
+  
+
+ 
+      <div class="row mb-2">
+        <div class="col form-group">
+          <label for="user_id">輸入暱稱</label>
+          <input type="text" id="user_id" name="user_id"class="form-control" placeholder="暱稱">
+        </div>
+        <div class="col">
+          <label for="user_pass">張貼密碼</label>
+          <input type="text" id="user_pass" name="user_pass"class="form-control" placeholder="password">
+        </div>
+      </div>
+
+
+      <input class ="btn btn-primary" type="submit" value="張貼">
+      <input class ="btn btn-danger" type="reset" value="重填"> 
+ 
+  </form>
+
+  
+
+
+
+</div>
+ 
+
+<script>
+   function go_delete(id) {
+   
+      // 调用layer弹窗组件 自訂
+     layer.open({
+            // 弹窗标题
+            title: "確認刪除",
+            // 正文
+            content: "確認刪除這篇文章嗎?",
+            // 点击确定按钮后调用的回调函数
+            btn: ['確認', '取消'],
+            // closeBtn: 0,
+            yes: function( layero,index) {
+                // 指定应当前往的 url
+                var user_pass = document.getElementById('user_pass').value; 
+                if (user_pass != "") { 
+                  //window.location頁面跳轉
+                  //usr對應urls.py的參數
+                  var usr = '/' + id + '/' + user_pass; 
+                  window.location = usr; 
+                  }
+                else{                 
+                  layer.msg ('請填刪除密碼',{time: 2000})
+                                               //2s后自动关闭
+                  }
+              },
+        })
+   }
+</script>
+{% endblock %}
