@@ -29,7 +29,7 @@
           <a class="nav-link" href="/get_example">get範例</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">分享日記</a>
+          <a class="nav-link" href="/diary_list">分享日記</a>
         </li>
         <li class="nav-item">
           <a class="nav-link " href="/admin" tabindex="-1" aria-disabled="true">後台管理</a>
@@ -37,8 +37,9 @@
 
         {% if username %}
           <li><a class="nav-link" href="/userinfo">✅個人資訊</a></li>
-          <li><a class="nav-link" href="/post">寫日記</a></li>
+          <li><a class="nav-link" href="/post">p06寫貼文</a></li>
           <li><a class="nav-link" href="/contact">聯絡管理員</a></li>
+          <li><a class="nav-link" href="/diary">p07寫日記</a></li>
           <li><a class="nav-link" href="/logout">💨登出</a></li>
         {% else %}
           <li><a class="nav-link" href="/login">💥登入</a></li>

@@ -30,6 +30,8 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')), #機器人驗證對應網址
     path('login/',views.login),#登入
     path('logout/',views.logout),#登出
-    path('userinfo/',views.userinfo)#登出
-
+    path('userinfo/',views.userinfo),#使用者資訊
+    path('diary/',views.diary),#寫日記
+    path('diary_list/',views.diary_list),#看日記
+    path('<int:pid>/',views.diary_del),#刪除日記
     ]

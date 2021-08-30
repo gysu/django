@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}<title>Diary</title>{% endblock %}
+{% block content%}
+<div class="col col-md-12 ">
+  <form name='my form' action='.' method='POST'>
+    {% csrf_token %}
+    <div class="card text">
+      <div class="card-header d-flex">
+        我的日記
+      </div>
+
+      {% if message %}
+      <div class="alert alert-success" role="alert" >
+        {{message}}
+      </div>
+      {% endif %}
+
+      <div class="card-body "> 
+        <!-- {{form.as_p}} -->
+        <table>
+          {{diary_form}}
+        </table>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
+        <div class="g-recaptcha" data-sitekey="6LcHYB8cAAAAAKaZs9OLUJHdAnRwYKN-jDNhIylc"></div>
+      </div>
+
+      <div class="card-footer">
+        <input  type="submit" value="送出">
+        <input type="reset" value="清除重填">
+      </div>
+
+    </div>
+  </form>
+
+</div> 
+
+{% endblock %}

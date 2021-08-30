@@ -6,11 +6,18 @@ from django.http import HttpResponse,HttpResponseRedirect
 from mysite import models
 from mysite import forms
 
-
-
+#第三方寄信
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 
+
+#使用django內建的登入方式
+from django.contrib.auth import authenticate
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+from django.contrib import messages
 
 
 
@@ -66,11 +73,22 @@ def index(request,pid=None,del_pass=None):
         message = "資料刪除成功"
       else:
         message = "密碼錯誤"
-    #檢查’username’有沒有存在於Session中
+
+
+  #檢查’username’有沒有存在於Session中
   #如果有就把username以及useremail都取出來，再送去index.html中渲染網頁
-  if 'username' in request.session:       
-    username = request.session['username']
-    usermail = request.session['useremail']
+
+  # if 'username' in request.session:       
+  #   username = request.session['username']
+  #   usermail = request.session['useremail']
+
+
+
+#使用內建的user就不用再從session中撈使用者資料簡化寫法
+  if request.user.is_authenticated:#使用is_authenticated來檢查使用者是否有登入
+    username = request.user.username
+  messages.get_messages(request)
+
   return render(request,"index.html",locals())
 
 #負責顯示
@@ -134,6 +152,7 @@ def contact(request):
 
   return render(request,"contact.html",locals())
 
+#驗證
 import urllib
 import json
 from django.conf import settings
@@ -176,8 +195,10 @@ def post2db(request): #從資料庫產生的form 再從
     message = '每個欄位都須填寫'
   return render(request,'post2db.html',locals())
 
-
+'''
 #登入  session 的用法
+#Message Framework運用
+from django.contrib import messages
 def login(request):
   if request.method == 'POST':
      login_form = forms.LoginForm(request.POST) #
@@ -188,16 +209,23 @@ def login(request):
           user = models.User.objects.get(name=login_name)  #檢查資料庫是否有使用者資訊
           if user.password == login_password:          #帳密一樣將資料記錄到Session中
             request.session['username'] = user.name    #設定session
-            request.session['useremail'] = user.email  
-            return redirect('/')
+            request.session['useremail'] = user.email 
+            messages.add_message(request,messages.SUCCESS,'成功登入了') 
+            return redirect('/userinfo/')
           else:
-            message = "密碼錯誤"
+            # message = "密碼錯誤"
+            messages.add_message(request,messages.WARNING,'密碼錯誤,請檢查') 
+
        except:
-          message = "找不到使用者"
+          # message = "找不到使用者"
+            messages.add_message(request,messages.WARNING,'找不到使用者') 
+
   else:
     login_form = forms.LoginForm()
-  return render(request,'login.html',locals())
+    messages.add_message(request,messages.INFO,'請檢查輸入的欄位內容') 
 
+  return render(request,'login.html',locals())
+#-----------
 #登出
 from django.contrib.sessions.models import Session  
 def logout(request):
@@ -205,15 +233,162 @@ def logout(request):
     Session.objects.all().delete()
     return redirect('/login/')
   return redirect('/')
+'''
+
+#--------------
 
 #使用者資訊
+@login_required(login_url='/login/') #裝飾器 沒登入就重導到login頁面
 def userinfo(request):
-  if 'username' in request.session: 
-    username  = request.session['username']
+  #這是用session
+  # if 'username' in request.session: 
+  #   username  = request.session['username']
+  #這是用內建auth
+  if request.user.is_authenticated:   #如果有登入
+    username  = request.user.username #從內建user資料撈出username欄位
+    print(username)
   else:
     return redirect('/login/')
   try:
-    userinfo = models.User.objects.get(name=username) #抓資料庫資訊
+    # userinfo = models.User.objects.get(name=username) #抓資料庫資訊
+    user = User.objects.get(username=username) #抓資料庫資訊
+    userinfo = models.Profile.objects.get(user=user)
+    print('123',username,userinfo)
   except:
     pass
   return render(request, 'userinfo.html',locals())
+
+'''
+#使用內建的user驗證 登入登出功能
+
+from django.contrib.auth.models import User
+
+user = User.objects.create_user('pikachu','pikachu@ntu.edu.tw', 'pikachu')
+
+user.last_name = 'Pokemon' #修改其中的任一欄位資料
+user.save()
+'''
+
+#--------------
+
+#使用django內建的登入方式
+from django.contrib.auth import authenticate
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+
+def login(request):
+  if request.method == 'POST':
+     login_form = forms.LoginForm(request.POST) 
+     if login_form.is_valid():                       
+       login_name = request.POST['username'].strip() #從表單中取得的login_name和login_password
+       login_password = request.POST['password'] 
+       user = authenticate(username = login_name ,password=login_password) # 透過authenticate進行驗證的工作
+       if user is not None:  #驗證成功此函數會傳回該使用者的資料放在user變數,驗證失敗則回傳None
+         if user.is_active: #成功登入之後可以再使用user.is_active來檢查此帳號是否有效
+           auth.login(request,user) #如果一切都通過，使用auth.login(request, user)把此使用者的資料存入Session中，供接下來其它網頁中使用
+           print("success",user)
+           messages.add_message(request,messages.SUCCESS,'登入成功')
+           return redirect('/userinfo/')
+         else:
+           messages.add_message(request,messages.WARNING,'帳號尚未啟用')
+       else:
+           messages.add_message(request,messages.WARNING,'登入失敗')
+     else:
+           messages.add_message(request,messages.INFO,'請檢查輸入的欄位內容')
+
+  else:
+    login_form = forms.LoginForm()
+
+  return render(request,'login.html',locals())
+
+#--------------
+
+#使用django內建的登出方式
+def logout(request):
+  auth.logout(request)
+  messages.add_message(request, messages.INFO, "成功登出了")
+  return redirect('/login/')
+
+#--------------
+
+##Diary日記
+def diary(request): #從資料庫產生的form 再從
+  if request.method == "POST":
+    diary_form = forms.DiaryForm(request.POST)
+    if diary_form.is_valid():   #檢查DOM裡的資料是否正確
+      recaptcha_response = request.POST.get('g-recaptcha-response')#google驗證 
+      url = 'https://www.google.com/recaptcha/api/siteverify'      #google驗證 
+      values = {                                                   #google驗證 
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response
+      }
+      data = urllib.parse.urlencode(values).encode()               #google驗證 
+      req = urllib.request.Request(url, data=data)                 #google驗證 
+      response = urllib.request.urlopen(req)                       #google驗證 
+      result = json.loads(response.read().decode())                #google驗證 
+      ur_pass = diary_form.cleaned_data.get('del_pass') #取得樣板所填寫的資料
+      
+      if request.user.is_authenticated:              #如股有登入
+        username = request.user.username             #從內建user資料撈出username欄位
+        user = User.objects.get(username=username)   #抓user資料
+        diary = models.Diary(user=user)              #將user資訊丟給diary user 因為要寫入資料庫缺使用者
+        print(diary,'123')
+        diary_form = forms.DiaryForm(request.POST, instance=diary)
+        print(diary_form,'456')
+      if result['success']:#google驗證
+         messages.add_message(request, messages.INFO, "日記已儲存")
+         diary_form.save()
+        # else:
+          # message="您的訊息已發布。"
+          # print(message)
+          # new = diary_form.save(commit=False)  #先把這筆記錄commit起來
+          # new.enabled = True                  #可以改其他欄位
+          # new.save()                          #再儲存
+          # diary_form.save()            #儲存後畫面不會跳轉
+         return redirect('/list/')#所以重導畫面
+      else:
+        messages.add_message(request, messages.WARNING, "reCAPTCHA驗證失敗，請在確認")
+        # message = "reCAPTCHA驗證失敗，請在確認."
+    else:
+      messages.add_message(request, messages.WARNING, "每個欄位都須填寫")
+
+      # message = '每個欄位都須填寫'
+  else:
+    diary_form = forms.DiaryForm() #從form.py
+    moods = models.Mood.objects.all()
+    messages.add_message(request, messages.WARNING, "每個欄位都須填寫")
+    # message = '每個欄位都須填寫'
+  return render(request,'diary.html',locals())
+
+
+
+#負責顯示日記
+def diary_list(request,):
+  if request.user.is_authenticated: #判斷使用者有沒有登入
+    username = request.user.username
+    useremail = request.user.email
+    try:
+      user = User.objects.get(username=username)
+      
+      diaries = models.Diary.objects.filter(user=user).order_by('-ddate')
+      print(diaries,'123')
+    except:
+      pass
+  return render(request,"diary_list.html", locals())
+
+
+
+#刪除日記
+def diary_del(request,pid=None):
+  if request.user.is_authenticated: #判斷使用者有沒有登入
+    if pid:
+      try:
+        diary = models.Diary.objects.get(id=pid)
+      except:
+        diary =None
+      if diary != None:
+        diary.delete()
+        message = "資料刪除成功"
+      else:
+        message = "密碼錯誤"
+    return redirect('/diary_list/')

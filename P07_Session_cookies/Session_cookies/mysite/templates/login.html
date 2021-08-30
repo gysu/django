@@ -2,11 +2,18 @@
 {% block title %}<title>P07 session登入分享日記</title>{% endblock %}
 {% block content%}
 <div class="col col-md-12 ">
-    {% if message %}
-      <div class="alert alert-success" role="alert" >
-        {{message}}
+    <!-- {% if messages %}     
+      <div class="alert alert-{{message.tags}}" role="alert" >
+        {{messages}}
       </div>
+    {% endif %} -->
+    {% for message in messages %}
+    {% if forloop.last %}
+    <div class="alert alert-{{message.tags}}" role="alert" >
+      {{message }}
+    </div>
     {% endif %}
+    {% endfor %}
 
   <form name='login' action='.' method='POST'>
     {% csrf_token %}

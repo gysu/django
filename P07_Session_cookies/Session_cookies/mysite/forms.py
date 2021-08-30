@@ -36,7 +36,7 @@ class ContactForm(forms.Form): #繼承forms.Form建立一個網站要使用的�
 #都要給客製化的 class="form-contol"
 #widget=forms.Textarea(attrs={'class': 'form-control'})
 '''
-
+#--------分隔線------
 '''
 class Meta:
         model = models.User     #關聯的model類
@@ -69,3 +69,21 @@ class PostForm(forms.ModelForm):
 class LoginForm(forms.Form):
   username = forms.CharField(label='姓名',max_length=20)
   password = forms.CharField(label='密碼',widget=forms.PasswordInput())
+
+#建立日記表單
+class DateInput(forms.DateInput): #選日期DateInput
+  input_type = 'date'
+
+class DiaryForm(forms.ModelForm):
+  class Meta:
+    model=models.Diary
+    fields = ['budget','weight','note','ddate']
+    widgets={  #日期套件
+      'ddate':DateInput(),
+    }
+  def __init__(self, *args, **kwargs):
+    super(DiaryForm,self).__init__(*args, **kwargs)
+    self.fields['budget'].label = '今日花費(元)'
+    self.fields['weight'].label = '今日體重(KG)'
+    self.fields['note'].label = '心情留言'
+    self.fields['ddate'].label = '日期'

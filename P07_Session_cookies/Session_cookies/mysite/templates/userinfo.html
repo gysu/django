@@ -2,7 +2,13 @@
 {% block title %}<title>分享日記</title>{% endblock %}
 {% block content%}
 <div class="col col-md-12 ">
-
+    {% for message in messages %}
+    {% if forloop.last %}
+    <div class="alert alert-{{message.tags}}" role="alert" >
+      {{message }}
+    </div>
+    {% endif %}
+    {% endfor %}
 
 
     {% csrf_token %}
@@ -10,10 +16,19 @@
       <div class="card-header d-flex">
         使用者資訊
       </div>
-
+      
       <div class="card-body ">
-          <p>姓名:{{userinfo.name}}</p>
-          <p>電子郵寄:{{userinfo.email}}</p>
+          <!-- 用session方式 <p>姓名:{{userinfo.name}}</p>
+          <p>電子郵寄:{{userinfo.email}}</p> -->
+
+          <!-- 用內建方式及profile -->
+          <p>姓名:{{userinfo.user}}</p>
+          <p>website:{{userinfo.website}}</p>
+          <p>姓別:{{userinfo.male | yesno:'男生,女生'}}</p>
+          <p>身高:{{userinfo.height}}</p>
+          <p>電子郵件:{{userinfo.user.email}}</p>
+
+          
 
       </div>
 

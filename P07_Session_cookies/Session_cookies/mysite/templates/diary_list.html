@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}<title>p07我的日記</title>{% endblock %}
+{% block content%}
+<div class="col-md-12">
+
+  <div class="card bg-danger text-black text-center p-3 mt-3" >
+    <blockquote class="blockquote mb-0">
+      <footer class="blockquote-footer text-white">
+        <small>
+          {{ username | default:"我"}}的私人日記
+        </small>
+      </footer>
+    </blockquote>
+  </div>
+
+</div>
+  {% for diary in diaries %}
+<div class="col col-md-4 g-3">
+
+  <div class="card text">
+    <div class="card-header d-flex">
+      【{{ diary.ddate }} 】
+      <!-- 刪除文章 點x跳出彈窗 -->
+      <div class ="ms-auto">
+        <small class = "text-end">
+          <p class="card-text">
+            <!-- <small class="text-muted">{{ diary.note | linebreaks}}</small> -->
+           </p>
+       </small>
+       <button onclick="go_delete({{diary.id}})" type="button" class="btn btn-outline-danger btn-sm "><i class="bi bi-x"></i></button>
+      </div>
+
+    </div>
+
+
+    <div class="card-body ">
+      <h5 class="card-title">{{ diary.note | linebreaks}}</h5>
+      <p class="card-text">今日花費：{{ diary.budget }}元，體重：{{ diary.weight }}公斤</p>
+
+      <div class = "text-end" > 
+        <a href="#" class="btn btn-outline-primary btn-sm">read more..</a>
+      </div>
+
+    </div>
+  </div>
+
+</div> 
+
+
+ {% endfor %}
+
+ <script>
+  function go_delete(id) {
+  
+     // 调用layer弹窗组件 自訂
+    layer.open({
+           // 弹窗标题
+           title: "確認刪除",
+           // 正文
+           content: "確認刪除這篇文章嗎?",
+           // 点击确定按钮后调用的回调函数
+           btn: ['確認', '取消'],
+           // closeBtn: 0,
+           yes: function( layero,index) {
+               // 指定应当前往的 url
+             
+
+                 //window.location頁面跳轉
+                 //usr對應urls.py的參數
+                 var usr = '/' + id ; 
+                 window.location = usr; 
+       
+             },
+       })
+  }
+</script>
+{% endblock %}
